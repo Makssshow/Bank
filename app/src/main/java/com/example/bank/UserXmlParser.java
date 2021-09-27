@@ -5,21 +5,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.util.ArrayList;
 import java.io.StringReader;
 
-public class ValuteXmlGet {
+public class UserXmlParser {
 
-    private ArrayList<Valute> valute;
+    private ArrayList<User> users;
 
-    public ValuteXmlGet(){
-        valute = new ArrayList<>();
+    public UserXmlParser(){
+        users = new ArrayList<>();
     }
 
-    public ArrayList<Valute> getUsers(){
-        return  valute;
+    public ArrayList<User> getUsers(){
+        return  users;
     }
 
     public boolean parse(String xmlData){
         boolean status = true;
-        Valute currentUser = null;
+        User currentUser = null;
         boolean inEntry = false;
         String textValue = "";
 
@@ -35,9 +35,9 @@ public class ValuteXmlGet {
                 String tagName = xpp.getName();
                 switch (eventType){
                     case XmlPullParser.START_TAG:
-                        if("value".equalsIgnoreCase(tagName)){
+                        if("user".equalsIgnoreCase(tagName)){
                             inEntry = true;
-                            currentUser = new Valute();
+                            currentUser = new User();
                         }
                         break;
                     case XmlPullParser.TEXT:
@@ -46,12 +46,12 @@ public class ValuteXmlGet {
                     case XmlPullParser.END_TAG:
                         if(inEntry){
                             if("user".equalsIgnoreCase(tagName)){
-                                valute.add(currentUser);
+                                users.add(currentUser);
                                 inEntry = false;
                             } else if("name".equalsIgnoreCase(tagName)){
-//                                currentUser.setName(textValue);
+                                currentUser.setName(textValue);
                             } else if("age".equalsIgnoreCase(tagName)){
-//                                currentUser.setAge(textValue);
+                                currentUser.setAge(textValue);
                             }
                         }
                         break;

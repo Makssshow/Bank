@@ -29,13 +29,13 @@ public class MainActivity extends AppCompatActivity {
         new Thread(new Runnable() {
             public void run() {
                 try{
-                    String content = download("http://www.cbr.ru/scripts/XML_daily.asp?date_req=02/03/2002");
+                    String content = download("https://example.com/users.xml");
                     usersList.post(new Runnable() {
                         public void run() {
-                            ValuteXmlGet parser = new ValuteXmlGet();
+                            UserXmlParser parser = new UserXmlParser();
                             if(parser.parse(content))
                             {
-                                ArrayAdapter<Valute> adapter = new ArrayAdapter(getBaseContext(),
+                                ArrayAdapter<User> adapter = new ArrayAdapter(getBaseContext(),
                                         android.R.layout.simple_list_item_1, parser.getUsers());
                                 usersList.setAdapter(adapter);
                                 contentView.setText("Загруженно объектов: " + adapter.getCount());

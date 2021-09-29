@@ -5,21 +5,21 @@ import org.xmlpull.v1.XmlPullParserFactory;
 import java.util.ArrayList;
 import java.io.StringReader;
 
-public class UserXmlParser {
+public class ValuteXmlParser {
 
-    private ArrayList<User> users;
+    private ArrayList<Valute> valutes;
 
-    public UserXmlParser(){
-        users = new ArrayList<>();
+    public ValuteXmlParser(){
+        valutes = new ArrayList<>();
     }
 
-    public ArrayList<User> getUsers(){
-        return  users;
+    public ArrayList<Valute> getUsers(){
+        return valutes;
     }
 
     public boolean parse(String xmlData){
         boolean status = true;
-        User currentUser = null;
+        Valute currentValute = null;
         boolean inEntry = false;
         String textValue = "";
 
@@ -35,9 +35,9 @@ public class UserXmlParser {
                 String tagName = xpp.getName();
                 switch (eventType){
                     case XmlPullParser.START_TAG:
-                        if("user".equalsIgnoreCase(tagName)){
+                        if("Valute".equalsIgnoreCase(tagName)){
                             inEntry = true;
-                            currentUser = new User();
+                            currentValute = new Valute();
                         }
                         break;
                     case XmlPullParser.TEXT:
@@ -45,13 +45,19 @@ public class UserXmlParser {
                         break;
                     case XmlPullParser.END_TAG:
                         if(inEntry){
-                            if("user".equalsIgnoreCase(tagName)){
-                                users.add(currentUser);
+                            if("Valute".equalsIgnoreCase(tagName)){
+                                valutes.add(currentValute);
                                 inEntry = false;
-                            } else if("name".equalsIgnoreCase(tagName)){
-                                currentUser.setName(textValue);
-                            } else if("age".equalsIgnoreCase(tagName)){
-                                currentUser.setAge(textValue);
+                            } else if("CharCode".equalsIgnoreCase(tagName)){
+                                currentValute.setCharCode(textValue);
+                            } else if("Value".equalsIgnoreCase(tagName)){
+                                currentValute.setValue(textValue);
+                            } else  if("NumCode".equalsIgnoreCase(tagName)){
+                                currentValute.setNumCode(textValue);
+                            } else  if("Nominal".equalsIgnoreCase(tagName)){
+                                currentValute.setNominal(textValue);
+                            } else  if("Name".equalsIgnoreCase(tagName)){
+                                currentValute.setName(textValue);
                             }
                         }
                         break;

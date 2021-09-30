@@ -8,6 +8,7 @@
 <TextView
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
+    android:id="@+id/address"
     android:text="..."
     android:layout_marginBottom="5dp"
     android:textColor="@color/black"
@@ -19,14 +20,15 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Банкомат"
+            android:id="@+id/type"
+            android:text="..."
             android:textColor="@color/black"
             />
         <TextView
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:id="@+id/status"
+            android:id="@+id/available"
             android:text="..."
             android:paddingStart="15dp"
             />

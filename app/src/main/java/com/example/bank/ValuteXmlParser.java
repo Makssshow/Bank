@@ -1,5 +1,7 @@
 package com.example.bank;
 
+import android.util.Log;
+
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
 import java.util.ArrayList;
@@ -13,7 +15,7 @@ public class ValuteXmlParser {
         valutes = new ArrayList<>();
     }
 
-    public ArrayList<Valute> getUsers(){
+    public ArrayList<Valute> getValute(){
         return valutes;
     }
 

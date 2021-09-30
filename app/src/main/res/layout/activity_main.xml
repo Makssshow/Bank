@@ -37,6 +37,7 @@
     <Button
         android:id="@+id/places"
         style="@style/homeButton"
+        android:onClick="ATM"
         android:text="Отделения и банкоматы"
         app:cornerRadius="10dp"
         app:icon="@drawable/place"
@@ -150,6 +151,7 @@
         android:text="ВОЙТИ"
         android:textColor="@color/white"
         android:textSize="17sp"
+        android:onClick="Login"
         android:layout_marginTop="50dp"
         />
 

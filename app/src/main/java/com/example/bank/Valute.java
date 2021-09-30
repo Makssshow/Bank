@@ -1,42 +1,51 @@
 package com.example.bank;
 
 public class Valute {
-    private String charCode;
-    private String value;
-    private String name;
-    private String nominal;
-    private String NumCode;
+    private String charCode,
+            value,
+            name,
+            nominal,
+            NumCode;
 
 
-    public String getCharCode(){
+    public String getCharCode() {
         return charCode;
     }
-    public String getValue(){
+
+    public String getValue() {
         return value;
     }
-    public String getNumCode(){
+
+    public String getNumCode() {
         return NumCode;
     }
-    public String getName(){
+
+    public String getName() {
         return name;
-    } public String getNominal(){
+    }
+
+    public String getNominal() {
         return nominal;
     }
 
 
-    public void setCharCode(String charCode){
+    public void setCharCode(String charCode) {
         this.charCode = charCode;
     }
-    public void setValue(String value){
+
+    public void setValue(String value) {
         this.value = value;
     }
-    public void setNumCode(String NumCode){
+
+    public void setNumCode(String NumCode) {
         this.NumCode = NumCode;
     }
-    public void setName(String name){
+
+    public void setName(String name) {
         this.name = name;
     }
-    public void setNominal(String nominal){
+
+    public void setNominal(String nominal) {
         this.nominal = nominal;
     }
 //    public String toString(){

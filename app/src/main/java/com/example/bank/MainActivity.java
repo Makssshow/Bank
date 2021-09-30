@@ -44,8 +44,6 @@ public class MainActivity extends AppCompatActivity {
         usdTitle = findViewById(R.id.usdTitle);
 
 
-
-
         //Get a date
         Date c = Calendar.getInstance().getTime();
 
@@ -55,10 +53,10 @@ public class MainActivity extends AppCompatActivity {
         //Set the date
         date.setText(formattedDate);
 
+
         formattedDate = dataText.format(c);
         //Generate link
         final String url = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + formattedDate;
-
 
         new Thread(() -> {
             try {
@@ -86,7 +84,9 @@ public class MainActivity extends AppCompatActivity {
                 }
 
             } catch (IOException ex) {
-                Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+                runOnUiThread(() -> {
+                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                });
             }
         }).start();
 
@@ -105,7 +105,6 @@ public class MainActivity extends AppCompatActivity {
         startActivity(activityATM);
         finish();
     }
-
 
 
     private String download(String urlPath) throws IOException {

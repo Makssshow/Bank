@@ -5,6 +5,14 @@ public class Places {
     private boolean available;
     private int id;
 
+    public Places(int id ,String address, boolean available, String type, String time ) {
+        this.id = id;
+        this.address = address;
+        this.available = available;
+        this.type = type;
+        this.time = time;
+    }
+
     public int getId() {
         return id;
     }

@@ -6,9 +6,18 @@
     android:layout_height="match_parent"
 
     tools:context=".ATM">
-<androidx.recyclerview.widget.RecyclerView
+
+<ListView
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:id="@+id/listATM"
     />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/listATM"
+        android:id="@+id/texta"
+        android:textColor="@color/blue"
+        android:text="aaaaa"
+        />
 </RelativeLayout>

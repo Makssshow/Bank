@@ -22,7 +22,7 @@
         android:layout_alignParentTop="true"
         android:layout_alignParentStart="true"
         android:divider="#80CBC4"
-        android:dividerHeight="5dp" >
+        android:dividerHeight="3dp" >
 
 
     </ListView>

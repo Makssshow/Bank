@@ -40,10 +40,13 @@ public class ATM extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atm);
 
+
         list = findViewById(R.id.listATM);
         pb = findViewById(R.id.progressBar);
 
-        new Thread(() -> {
+        boolean worked = false;
+
+        Thread internet = new Thread(() -> {
             try {
                 String data = download();
                 // get JSONObject from JSON file
@@ -78,7 +81,8 @@ public class ATM extends AppCompatActivity {
                 });
                 e.printStackTrace();
             }
-        }).start();
+        });
+        internet.start();
 
 
 

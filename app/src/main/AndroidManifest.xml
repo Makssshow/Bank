@@ -16,6 +16,7 @@
             android:name=".ATM"
             android:exported="true"
             android:theme="@style/Theme.Bank.Dark"
+            android:label="Отделения и банкоматы"
             />
         <activity
             android:name=".MainActivity"

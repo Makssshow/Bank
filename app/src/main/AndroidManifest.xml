@@ -14,7 +14,9 @@
         android:theme="@style/Theme.Bank">
         <activity
             android:name=".ATM"
-            android:exported="true" />
+            android:exported="true"
+            android:theme="@style/Theme.Bank.Dark"
+            />
         <activity
             android:name=".MainActivity"
             android:exported="true">

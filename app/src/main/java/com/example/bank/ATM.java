@@ -4,9 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -27,15 +30,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 public class ATM extends AppCompatActivity {
     ListView list;
-    TextView a;
-
+    ProgressBar pb;
     ArrayList<Places> arrayATM = new ArrayList<>();
-
-    ArrayList<Integer> id = new ArrayList<>();
-    ArrayList<String> address = new ArrayList<>();
-    ArrayList<Boolean> available = new ArrayList<>();
-    ArrayList<String> type = new ArrayList<>();
-    ArrayList<String> time = new ArrayList<>();
 
     private static PlacesAdapter adapter;
 
@@ -45,9 +41,7 @@ public class ATM extends AppCompatActivity {
         setContentView(R.layout.activity_atm);
 
         list = findViewById(R.id.listATM);
-        a = findViewById(R.id.texta);
-//        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getApplicationContext());
-//        list.setLayoutManager(linearLayoutManager);
+        pb = findViewById(R.id.progressBar);
 
         new Thread(() -> {
             try {
@@ -66,16 +60,11 @@ public class ATM extends AppCompatActivity {
                     JSONObject PlacesDetails = PlacesArray.getJSONObject(i);
                     // fetch email and name and store it in arraylist
                     arrayATM.add(new Places(PlacesDetails.getInt("id"), PlacesDetails.getString("address"), PlacesDetails.getBoolean("available"), PlacesDetails.getString("type"), PlacesDetails.getString("time")));
-                    id.add(PlacesDetails.getInt("id"));
-                    address.add(PlacesDetails.getString("address"));
-                    available.add(PlacesDetails.getBoolean("available"));
-                    type.add(PlacesDetails.getString("type"));
-                    time.add(PlacesDetails.getString("time"));
-
                 }
                 runOnUiThread(() -> {
                     adapter= new PlacesAdapter( ATM.this, arrayATM);
                     list.setAdapter(adapter);
+                    pb.setVisibility(View.INVISIBLE);
                 });
 
             } catch (JSONException e) {
@@ -95,6 +84,13 @@ public class ATM extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
+        finish();
+        super.onBackPressed();
+    }
 
     private String download() throws IOException {
         String result = "";

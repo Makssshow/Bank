@@ -103,7 +103,7 @@ public class MainActivity extends AppCompatActivity {
     public void ATM(View v) {
         Intent activityATM = new Intent(getApplicationContext(), ATM.class);
         startActivity(activityATM);
-        finish();
+//        finish();
     }
 
 

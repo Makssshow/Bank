@@ -86,14 +86,16 @@ public class ATM extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+//        startActivity(intent);
         finish();
+//        Intent intent = MainActivity.class;
+//        startActivity();
         super.onBackPressed();
     }
 
     private String download() throws IOException {
-        String result = "";
+        StringBuilder result = new StringBuilder();
         HttpsURLConnection connection = null;
         InputStream is = null;
         BufferedReader reader = null;
@@ -105,9 +107,9 @@ public class ATM extends AppCompatActivity {
             reader = new BufferedReader(new InputStreamReader(is));
             String line;
             while ((line = reader.readLine()) != null) {
-                result = result + line;
+                result.append(line);
             }
-            return result;
+            return result.toString();
         } finally {
             if (reader != null) {
                 reader.close();

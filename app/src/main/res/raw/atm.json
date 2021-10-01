@@ -3,7 +3,7 @@
     {
       "id": 1,
       "address": "Москва. Улица Гагарина д.9",
-      "available": true,
+      "available": false,
       "type": "Отделение",
       "time": "00:00 - 23:00"
     },

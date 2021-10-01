@@ -21,6 +21,7 @@ import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.util.ArrayList;
+import java.util.Timer;
 
 import javax.net.ssl.HttpsURLConnection;
 
@@ -71,35 +72,26 @@ public class ATM extends AppCompatActivity {
                     type.add(PlacesDetails.getString("type"));
                     time.add(PlacesDetails.getString("time"));
 
-                    runOnUiThread(() -> {
-                            a.setText(type.toString());
-
-                    });
-
                 }
                 runOnUiThread(() -> {
-//                    a.setText(arrayATM.toString());
+                    adapter= new PlacesAdapter( ATM.this, arrayATM);
+                    list.setAdapter(adapter);
                 });
 
             } catch (JSONException e) {
                 runOnUiThread(() -> {
-//                    a.setText(e.getMessage());
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
                 e.printStackTrace();
             } catch (IOException e) {
                 runOnUiThread(() -> {
-
-//                    a.setText(e.getMessage());
+                    Toast.makeText(getApplicationContext(), e.getMessage(), Toast.LENGTH_SHORT).show();
                 });
                 e.printStackTrace();
             }
         }).start();
 
-        //  call the constructor of CustomAdapter to send the reference and data to Adapter
-        adapter = new PlacesAdapter(arrayATM, getApplicationContext());
-        list.setAdapter(adapter); // set the Adapter to RecyclerView
-//        adapter= new CustomAdapter(dataModels,getApplicationContext());
-//        listView.setAdapter(adapter);
+
 
     }
 

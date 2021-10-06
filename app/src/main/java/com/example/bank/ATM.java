@@ -16,6 +16,7 @@ import android.widget.Toast;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.w3c.dom.Text;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -44,8 +45,6 @@ public class ATM extends AppCompatActivity {
         list = findViewById(R.id.listATM);
         pb = findViewById(R.id.progressBar);
 
-        boolean worked = false;
-
         Thread internet = new Thread(() -> {
             try {
                 String data = download();
@@ -62,7 +61,8 @@ public class ATM extends AppCompatActivity {
                     // create a JSONObject for fetching single user data
                     JSONObject PlacesDetails = PlacesArray.getJSONObject(i);
                     // fetch email and name and store it in arraylist
-                    arrayATM.add(new Places(PlacesDetails.getInt("id"), PlacesDetails.getString("address"), PlacesDetails.getBoolean("available"), PlacesDetails.getString("type"), PlacesDetails.getString("time")));
+                    Time time = new Time(PlacesDetails.getJSONObject("time").getString("open"), PlacesDetails.getJSONObject("time").getString("close"));
+                    arrayATM.add(new Places(PlacesDetails.getInt("id"), PlacesDetails.getString("address"), PlacesDetails.getString("type"), time));
                 }
                 runOnUiThread(() -> {
                     adapter= new PlacesAdapter( ATM.this, arrayATM);
@@ -90,11 +90,9 @@ public class ATM extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-//        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-//        startActivity(intent);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
         finish();
-//        Intent intent = MainActivity.class;
-//        startActivity();
         super.onBackPressed();
     }
 

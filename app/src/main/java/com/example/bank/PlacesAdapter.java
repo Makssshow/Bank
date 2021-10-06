@@ -17,8 +17,12 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.ListAdapter;
 import androidx.recyclerview.widget.RecyclerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class PlacesAdapter extends BaseAdapter {
 
@@ -60,14 +64,42 @@ public class PlacesAdapter extends BaseAdapter {
 
         address.setText(current.getAddress());
         type.setText(current.getType());
-        if (current.getAvailable()) {
+
+
+        Date date = Calendar.getInstance().getTime();
+        SimpleDateFormat hours = new SimpleDateFormat("hh", Locale.getDefault());
+        SimpleDateFormat minutes = new SimpleDateFormat("mm", Locale.getDefault());
+        int currentHour = Integer.parseInt(hours.format(date));
+        int currentMinute = Integer.parseInt(minutes.format(date));
+
+        String[] open = current.getTime().open.split(":");
+        String[] close = current.getTime().close.split(":");
+        int openHour = Integer.parseInt(open[0]);
+        int openMinute = Integer.parseInt(open[1]);
+        int closeHour = Integer.parseInt(close[0]);
+        int closeMinute = Integer.parseInt(close[1]);
+//        10:40 - 12:30
+//        11:39
+
+        boolean status = false;
+        if (openHour <= currentHour && closeHour >= currentHour ) {
+            status = true;
+            if (openHour == currentHour) {
+                if (currentMinute < openMinute) {
+                    status = false;
+                }
+            } else if (closeHour == currentHour) if (currentMinute > closeMinute) {
+                status = false;
+            }
+        }
+        if (status) {
             available.setText("Работает");
             available.setTextColor(ContextCompat.getColor(mContext, R.color.green));
         } else {
             available.setText("Закрыто");
             available.setTextColor(ContextCompat.getColor(mContext, R.color.red));
         }
-        time.setText(current.getTime());
+        time.setText(current.getTime().open + " - " + current.getTime().close);
 
         return convertView;
     }

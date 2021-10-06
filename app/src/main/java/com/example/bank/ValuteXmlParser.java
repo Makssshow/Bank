@@ -1,9 +1,14 @@
 package com.example.bank;
 
 import android.util.Log;
+import android.util.Xml;
 
+import org.xml.sax.InputSource;
 import org.xmlpull.v1.XmlPullParser;
 import org.xmlpull.v1.XmlPullParserFactory;
+
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.io.StringReader;
 
@@ -19,6 +24,8 @@ public class ValuteXmlParser {
         return valutes;
     }
 
+    public int getCount() {return valutes.size();}
+
     public boolean parse(String xmlData){
         boolean status = true;
         Valute currentValute = null;
@@ -29,8 +36,9 @@ public class ValuteXmlParser {
             XmlPullParserFactory factory = XmlPullParserFactory.newInstance();
             factory.setNamespaceAware(true);
             XmlPullParser xpp = factory.newPullParser();
+            StringReader a = new StringReader(xmlData);
 
-            xpp.setInput(new StringReader(xmlData));
+            xpp.setInput(a);
             int eventType = xpp.getEventType();
             while(eventType != XmlPullParser.END_DOCUMENT){
 

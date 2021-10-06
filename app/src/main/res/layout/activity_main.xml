@@ -3,7 +3,6 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
-
     <ImageView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -52,6 +51,7 @@
         android:layout_marginStart="20dp"
         android:layout_marginEnd="20dp"
         android:background="@drawable/shape"
+        android:onClick="Course"
         android:id="@+id/valuesButton"
         android:clickable="true"
         android:focusable="true"
@@ -154,5 +154,4 @@
         android:onClick="Login"
         android:layout_marginTop="50dp"
         />
-
 </RelativeLayout>

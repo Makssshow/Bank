@@ -8,6 +8,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:layout_marginTop="20dp"
+    android:textColor="#A6A6A6"
     android:text="Введите Ваш логин и пароль"
     android:textAlignment="center" />
 
@@ -17,13 +18,20 @@
         android:layout_height="wrap_content"
         android:ems="10"
         android:hint="Логин"
-        android:inputType="textPersonName" />
+        android:inputType="textPersonName"
+        android:textColor="@color/white"
+        android:textColorHint="#FFFFFF"
+        android:backgroundTint="#80CBC4"
+        />
 
     <EditText
         android:id="@+id/passwordField"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:textColor="@color/white"
+        android:textColorHint="#FFFFFF"
+        android:backgroundTint="#80CBC4"
         android:inputType="numberPassword"
         android:hint="Пароль" />
 </LinearLayout>

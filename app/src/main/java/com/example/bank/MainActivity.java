@@ -47,16 +47,21 @@ public class MainActivity extends AppCompatActivity {
 
 
         //Get a date
-        Date c = Calendar.getInstance().getTime();
+        final Calendar c = Calendar.getInstance();
+        Date today = c.getTime();
+        c.add(Calendar.DATE, -1);
+        Date yesterday = c.getTime();
+        c.add(Calendar.DATE, -2);
+        Date beforeYesterday = c.getTime();
 
         SimpleDateFormat df = new SimpleDateFormat("dd-MM-yyyy", Locale.getDefault());
         SimpleDateFormat dataText = new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault());
-        String formattedDate = df.format(c);
+        String formattedDate = df.format(today);
         //Set the date
         date.setText(formattedDate);
 
 
-        formattedDate = dataText.format(c);
+        formattedDate = dataText.format(yesterday);
         //Generate link
         final String url = "http://www.cbr.ru/scripts/XML_daily.asp?date_req=" + formattedDate;
 
@@ -105,7 +110,13 @@ public class MainActivity extends AppCompatActivity {
     public void ATM(View v) {
         Intent activityATM = new Intent(getApplicationContext(), ATM.class);
         startActivity(activityATM);
-//        finish();
+        finish();
+    }
+
+    public void Course(View v) {
+        Intent intent = new Intent(getApplicationContext(), Course.class);
+        startActivity(intent);
+        finish();
     }
 
 

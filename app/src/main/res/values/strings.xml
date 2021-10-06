@@ -1,4 +1,5 @@
 <resources>
     <string name="app_name">Bank</string>
     <string name="placeholder">...</string>
+    <string name="flag">flag</string>
 </resources>

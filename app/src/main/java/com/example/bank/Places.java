@@ -1,14 +1,15 @@
 package com.example.bank;
 
+import org.json.JSONObject;
+
 public class Places {
-    private String address, type, time;
-    private boolean available;
+    private String address, type;
+    private Time time;
     private int id;
 
-    public Places(int id ,String address, boolean available, String type, String time ) {
+    public Places(int id , String address, String type, Time time ) {
         this.id = id;
         this.address = address;
-        this.available = available;
         this.type = type;
         this.time = time;
     }
@@ -29,19 +30,11 @@ public class Places {
         this.address = address;
     }
 
-    public boolean getAvailable() {
-        return available;
-    }
-
-    public void setAvailable(boolean available) {
-        this.available = available;
-    }
-
-    public String getTime() {
+    public Time getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(Time time) {
         this.time = time;
     }
 

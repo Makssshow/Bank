@@ -3,6 +3,9 @@
     package="com.example.bank">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <meta-data
+        android:name="com.google.android.geo.API_KEY"
+        android:value="AIzaSyAK1DHTPLXjWsdmkXbDIEBljgfJTHLQX0A" />
 
     <application
         android:allowBackup="true"
@@ -13,14 +16,19 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.Bank">
         <activity
-            android:name=".ATM"
+            android:name=".Course"
             android:exported="true"
             android:theme="@style/Theme.Bank.Dark"
-            android:label="Отделения и банкоматы"
             />
         <activity
+            android:name=".ATM"
+            android:exported="true"
+            android:label="Отделения и банкоматы"
+            android:theme="@style/Theme.Bank.Dark" />
+        <activity
             android:name=".MainActivity"
-            android:exported="true">
+            android:exported="true"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 

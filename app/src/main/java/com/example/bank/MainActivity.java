@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,14 +29,21 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
 
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class MainActivity extends AppCompatActivity {
     TextView date, eur, usd, usdTitle, eurTitle;
+    UserService userService;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        userService = ApiUtils.getUserService();
 
 
         date = findViewById(R.id.date);
@@ -92,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
 
             } catch (IOException ex) {
                 runOnUiThread(() -> {
-                Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
+                    Toast.makeText(this, ex.getMessage(), Toast.LENGTH_LONG).show();
                 });
             }
         }).start();
@@ -102,9 +110,26 @@ public class MainActivity extends AppCompatActivity {
 
 
     public void Login(View view) {
-        FragmentManager manager = getSupportFragmentManager();
-        DialogFragmentClass myDialogFragment = new DialogFragmentClass();
-        myDialogFragment.show(manager, "Login");
+        AlertDialog.Builder builder = new AlertDialog.Builder(new ContextThemeWrapper(this, R.style.AlertDialogCustom));
+
+        LayoutInflater inflater = this.getLayoutInflater();
+        View mView = inflater.inflate(R.layout.login, null);
+        builder.setView(mView);
+
+        final EditText usernameField = mView.findViewById(R.id.loginField);
+        final EditText passwordField = mView.findViewById(R.id.passwordField);
+
+        //Setting message manually and performing action on button click
+        builder.setCancelable(false)
+                .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel())
+                .setPositiveButton("Добавить", (dialog, id) -> {
+                    doLogin(usernameField.getText().toString(), passwordField.getText().toString());
+                })
+                .setTitle("Авторизация")
+                .create().show();
+//        FragmentManager manager = getSupportFragmentManager();
+//        DialogFragmentClass myDialogFragment = new DialogFragmentClass();
+//        myDialogFragment.show(manager, "Login");
     }
 
     public void ATM(View v) {
@@ -119,33 +144,60 @@ public class MainActivity extends AppCompatActivity {
         finish();
     }
 
+    private void doLogin(final String username, final String password) {
+        Call call = userService.login(username, password);
+        call.enqueue(new Callback() {
+            @Override
+            public void onResponse(Call call, Response response) {
+                if (response.isSuccessful()) {
+                    ResObj resObj = (ResObj) response.body();
+                    if (resObj.getMessage().equals("true")) {
+                        //login start main activity
+                        Intent intent = new Intent(MainActivity.this, MainActivity.class);
+                        intent.putExtra("username", username);
+                        startActivity(intent);
 
-    private String download(String urlPath) throws IOException {
-        StringBuilder xmlResult = new StringBuilder();
-        BufferedReader reader = null;
-        InputStream stream = null;
-        HttpURLConnection connection = null;
-        try {
-            URL url = new URL(urlPath);
-            connection = (HttpURLConnection) url.openConnection();
-            stream = connection.getInputStream();
-            reader = new BufferedReader(new InputStreamReader(stream));
-            String line;
-            while ((line = reader.readLine()) != null) {
-                xmlResult.append(line);
+                    } else {
+//                        Toast.makeText(LoginActivity.this, "The username or password is incorrect", Toast.LENGTH_SHORT).show();
+                    }
+                } else {
+//                    Toast.makeText(LoginActivity.this, "Error! Please try again!", Toast.LENGTH_SHORT).show();
+                }
             }
-            return xmlResult.toString();
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-            if (stream != null) {
-                stream.close();
-            }
-            if (connection != null) {
-                connection.disconnect();
+
+            @Override
+            public void onFailure(Call call, Throwable t) {
+//                Toast.makeText(LoginActivity.this, t.getMessage(), Toast.LENGTH_SHORT).show();
+            }});
+        };
+
+
+        private String download(String urlPath) throws IOException {
+            StringBuilder xmlResult = new StringBuilder();
+            BufferedReader reader = null;
+            InputStream stream = null;
+            HttpURLConnection connection = null;
+            try {
+                URL url = new URL(urlPath);
+                connection = (HttpURLConnection) url.openConnection();
+                stream = connection.getInputStream();
+                reader = new BufferedReader(new InputStreamReader(stream));
+                String line;
+                while ((line = reader.readLine()) != null) {
+                    xmlResult.append(line);
+                }
+                return xmlResult.toString();
+            } finally {
+                if (reader != null) {
+                    reader.close();
+                }
+                if (stream != null) {
+                    stream.close();
+                }
+                if (connection != null) {
+                    connection.disconnect();
+                }
             }
         }
-    }
 
-}
+    }

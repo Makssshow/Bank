@@ -5,13 +5,16 @@
       <map>
         <entry key="app/src/main/res/drawable/atm_list_item.xml" value="0.2828125" />
         <entry key="app/src/main/res/drawable/shape.xml" value="0.28229166666666666" />
-        <entry key="app/src/main/res/layout/activity_atm.xml" value="0.22569444444444445" />
+        <entry key="app/src/main/res/layout/activity_atm.xml" value="0.21311475409836064" />
         <entry key="app/src/main/res/layout/activity_course.xml" value="0.30052083333333335" />
         <entry key="app/src/main/res/layout/activity_main.xml" value="0.1027984619140625" />
+        <entry key="app/src/main/res/layout/activity_splash.xml" value="0.3729166666666667" />
         <entry key="app/src/main/res/layout/atm_list_item.xml" value="0.26666666666666666" />
         <entry key="app/src/main/res/layout/course_action_bar.xml" value="0.3609375" />
         <entry key="app/src/main/res/layout/course_item.xml" value="0.3609375" />
+        <entry key="app/src/main/res/layout/fragment_maps.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/layout/login.xml" value="0.335" />
+        <entry key="app/src/main/res/layout/map_fragment.xml" value="0.2604166666666667" />
         <entry key="app/src/main/res/xml/network_sequrity_config.xml" value="0.20729166666666668" />
         <entry key="app/src/main/res/xml/shape.xml" value="0.26614583333333336" />
         <entry key="app/src/main/res/xml/user.xml" value="0.26614583333333336" />

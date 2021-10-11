@@ -5,25 +5,34 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ATM">
+<FrameLayout
+    android:layout_width="match_parent"
+    android:layout_height="250dp"
+    android:id="@+id/frame_layout" />
 
-    <ProgressBar
-        android:id="@+id/progressBar"
-        style="?android:attr/progressBarStyle"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        />
 
-    <ListView
-        android:id="@+id/listATM"
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:divider="#80CBC4"
-        android:dividerHeight="3dp" >
+        android:layout_below="@+id/frame_layout">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true" />
+
+        <ListView
+            android:id="@+id/listATM"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:divider="#80CBC4"
+            android:dividerHeight="3dp" />
 
 
-    </ListView>
+    </RelativeLayout>
+
 </RelativeLayout>

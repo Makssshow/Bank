@@ -2,12 +2,20 @@ package com.example.bank;
 
 import android.app.AlertDialog;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
 import android.widget.Toast;
 
 import androidx.fragment.app.DialogFragment;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class DialogFragmentClass extends DialogFragment {
     public Dialog onCreateDialog(Bundle savedInstanceState) {
@@ -20,11 +28,12 @@ public class DialogFragmentClass extends DialogFragment {
         builder.setCancelable(false)
                 .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel())
                 .setPositiveButton("Добавить", (dialog, id) -> {
-                    dialog.cancel();
-                    Toast.makeText(getActivity(), "you choose no action for alertbox",
-                            Toast.LENGTH_SHORT).show();
+
                 })
                 .setTitle("Авторизация");
         return builder.create();
     }
+
+
+
 }

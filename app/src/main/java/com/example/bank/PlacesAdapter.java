@@ -78,8 +78,6 @@ public class PlacesAdapter extends BaseAdapter {
         int openMinute = Integer.parseInt(open[1]);
         int closeHour = Integer.parseInt(close[0]);
         int closeMinute = Integer.parseInt(close[1]);
-//        10:40 - 12:30
-//        11:39
 
         boolean status = false;
         if (openHour <= currentHour && closeHour >= currentHour ) {

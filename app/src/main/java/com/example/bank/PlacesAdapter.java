@@ -67,17 +67,17 @@ public class PlacesAdapter extends BaseAdapter {
 
 
         Date date = Calendar.getInstance().getTime();
-        SimpleDateFormat hours = new SimpleDateFormat("hh", Locale.getDefault());
+        SimpleDateFormat hours = new SimpleDateFormat("HH", Locale.getDefault());
         SimpleDateFormat minutes = new SimpleDateFormat("mm", Locale.getDefault());
-        int currentHour = Integer.parseInt(hours.format(date));
-        int currentMinute = Integer.parseInt(minutes.format(date));
+        double currentHour = Double.parseDouble(hours.format(date));
+        double currentMinute = Double.parseDouble(minutes.format(date));
 
         String[] open = current.getTime().open.split(":");
         String[] close = current.getTime().close.split(":");
-        int openHour = Integer.parseInt(open[0]);
-        int openMinute = Integer.parseInt(open[1]);
-        int closeHour = Integer.parseInt(close[0]);
-        int closeMinute = Integer.parseInt(close[1]);
+        double openHour = Double.parseDouble(open[0]);
+        double openMinute = Double.parseDouble(open[1]);
+        double closeHour = Double.parseDouble(close[0]);
+        double closeMinute = Double.parseDouble(close[1]);
 
         boolean status = false;
         if (openHour <= currentHour && closeHour >= currentHour ) {

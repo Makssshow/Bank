@@ -6,6 +6,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -39,13 +41,12 @@ import java.util.Timer;
 
 import javax.net.ssl.HttpsURLConnection;
 
-public class ATM extends AppCompatActivity implements OnMapReadyCallback {
+public class ATM extends AppCompatActivity {
     ListView list;
     ProgressBar pb;
     ArrayList<Places> arrayATM = new ArrayList<>();
     ArrayList<String> coordinatesArray = new ArrayList<>();
 
-    private GoogleMap mMap;
 
     private static PlacesAdapter adapter;
 
@@ -54,8 +55,11 @@ public class ATM extends AppCompatActivity implements OnMapReadyCallback {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_atm);
 
-        Fragment fragment = new MapsFragment();
-        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment).commit();
+//        Fragment fragment = new MapsFragment();
+//        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, fragment).commit();
+
+
+
 
         list = findViewById(R.id.listATM);
         pb = findViewById(R.id.progressBar);
@@ -79,12 +83,13 @@ public class ATM extends AppCompatActivity implements OnMapReadyCallback {
 
                     coordinatesArray.add(PlacesDetails.getString("coordinates"));
                     Time time = new Time(PlacesDetails.getJSONObject("time").getString("open"), PlacesDetails.getJSONObject("time").getString("close"));
-                    arrayATM.add(new Places(PlacesDetails.getInt("id"), PlacesDetails.getString("address"), PlacesDetails.getString("coordinates"),PlacesDetails.getString("type"), time));
+                    arrayATM.add(new Places(PlacesDetails.getInt("id"), PlacesDetails.getString("address"), PlacesDetails.getString("type"), PlacesDetails.getString("coordinates"), time));
                 }
                 runOnUiThread(() -> {
                     adapter= new PlacesAdapter( ATM.this, arrayATM);
                     list.setAdapter(adapter);
                     pb.setVisibility(View.INVISIBLE);
+
                 });
 
             } catch (JSONException e) {
@@ -105,24 +110,6 @@ public class ATM extends AppCompatActivity implements OnMapReadyCallback {
 
     }
 
-    @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
-
-    }
-
-    private void setupMap(ArrayList<String> array) {
-        // Add a marker in Sydney and move the camera
-        for (String item: array) {
-            String[] numbers =  item.split(",");
-        LatLng place = new LatLng(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]));
-        mMap.addMarker(new MarkerOptions()
-                .position(place));
-//                .title("Marker in Sydney"));
-        mMap.moveCamera(CameraUpdateFactory.newLatLng(place));
-
-        }
-    }
 
     @Override
     public void onBackPressed() {

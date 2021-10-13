@@ -16,7 +16,11 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.util.ArrayList;
+
 public class MapsFragment extends Fragment {
+
+    GoogleMap map;
 
     private OnMapReadyCallback callback = new OnMapReadyCallback() {
 
@@ -31,9 +35,16 @@ public class MapsFragment extends Fragment {
          */
         @Override
         public void onMapReady(GoogleMap googleMap) {
-            LatLng sydney = new LatLng(-34, 151);
-            googleMap.addMarker(new MarkerOptions().position(sydney).title("Marker in Sydney"));
-            googleMap.moveCamera(CameraUpdateFactory.newLatLng(sydney));
+            map = googleMap;
+//            for (String item : coordinatesArray) {
+//                String[] numbers = item.split(", ");
+//                LatLng place = new LatLng(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]));
+//                googleMap.addMarker(new MarkerOptions()
+//                        .position(place)
+//                        .title(item));
+//                googleMap.moveCamera(CameraUpdateFactory.newLatLng(place));
+//
+//            }
         }
     };
 
@@ -48,10 +59,22 @@ public class MapsFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        SupportMapFragment mapFragment =
-                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
-        if (mapFragment != null) {
-            mapFragment.getMapAsync(callback);
+//        SupportMapFragment mapFragment =
+//                (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+//        if (mapFragment != null) {
+//            mapFragment.getMapAsync(callback);
+//        }
+    }
+
+    public void addMarkers(ArrayList<String> array) {
+        for (String item: array) {
+            String[] numbers =  item.split(",");
+            LatLng place = new LatLng(Double.parseDouble(numbers[0]), Double.parseDouble(numbers[1]));
+            map.addMarker(new MarkerOptions()
+                    .position(place));
+//                .title("Marker in Sydney"));
+            map.moveCamera(CameraUpdateFactory.newLatLng(place));
+
         }
     }
 }

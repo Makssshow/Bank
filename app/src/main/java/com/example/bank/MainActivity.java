@@ -1,5 +1,6 @@
 package com.example.bank;
 
+
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -64,12 +65,8 @@ public class MainActivity extends AppCompatActivity {
         eurTitle = findViewById(R.id.eurTitle);
         usdTitle = findViewById(R.id.usdTitle);
 
-       editor = pref.edit();
+        editor = pref.edit();
 
-       TextView ads = findViewById(R.id.abc);
-       if (!pref.getString("token", "").isEmpty()) {
-           ads.append(pref.getString("token", "empty"));
-       }
 
         //Get a date
         final Calendar c = Calendar.getInstance();
@@ -138,33 +135,7 @@ public class MainActivity extends AppCompatActivity {
         //Setting message manually and performing action on button click
         builder.setCancelable(false)
                 .setNegativeButton("Отмена", (dialog, id) -> {
-                            TextView a = findViewById(R.id.abc);
-                            NetworkService.getInstance()
-                                    .getJSONApi()
-                                    .getRoles()
-                                    .enqueue(new Callback<List<Role>>() {
-                                        @Override
-                                        public void onResponse(Call<List<Role>> call, Response<List<Role>> response) {
-                                            List<Role> list = response.body();
-                                            if (list != null) {
-//                                                for (int i = 0; i < list.size(); i++) {
-//                                                    Role current = list.get(i);
-//                                                    a.append("id: " + current.getId() + "; Name: " + current.getName() + "; Desc: " + current.getDescription() + " ||||||");
-//                                                }
-                                                editor.putString("token", list.get(0).getId());
-                                                editor.apply();
-                                            } else {
-                                                a.append(response.raw().toString());
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onFailure(Call<List<Role>> call, Throwable t) {
-                                            a.append(t.getMessage());
-                                        }
-                                    });
                             dialog.cancel();
-
                         }
                 )
                 .setPositiveButton("Добавить", (dialog, id) -> {
@@ -186,13 +157,14 @@ public class MainActivity extends AppCompatActivity {
                                 @Override
                                 public void onResponse(@NonNull Call<Role> call, @NonNull Response<Role> response) {
                                     Role role = response.body();
-                                    TextView a = findViewById(R.id.abc);
+//                                    TextView a = findViewById(R.id.abc);
                                     if (role != null) {
-                                        a.append(role.getId());
-                                        a.append(role.getName());
-                                        a.append(role.getDescription());
+                                        editor = pref.edit();
+                                        editor.putString("token", role.getId());
+                                        editor.apply();
+                                        checkToken();
                                     } else {
-                                        a.append("error");
+                                        Toast.makeText(MainActivity.this, response.raw().toString(), Toast.LENGTH_LONG).show();
                                     }
                                 }
 
@@ -222,6 +194,31 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Course.class);
         startActivity(intent);
         finish();
+    }
+
+    private void checkToken() {
+        if (!pref.getString("token", "").isEmpty()) {
+            NetworkService.getInstance().getJSONApi().getRoleById(pref.getString("token", "")).enqueue(new Callback<Role>() {
+                @Override
+                public void onResponse(Call<Role> call, Response<Role> response) {
+                    Role role = response.body();
+                    if (role != null) {
+                        Intent intent = new Intent(MainActivity.this, UserActivity.class);
+                        ArrayList<String> array = new ArrayList<>();
+                        array.add(role.getName());
+                        array.add(role.getDescription());
+                        intent.putExtra("User", array);
+                        startActivity(intent);
+                        finish();
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<Role> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), t.getMessage(), Toast.LENGTH_LONG).show();
+                }
+            });
+        }
     }
 
     private String download(String urlPath) throws IOException {

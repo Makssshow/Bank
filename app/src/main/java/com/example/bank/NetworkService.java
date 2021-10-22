@@ -1,6 +1,5 @@
 package com.example.bank;
 
-
 import retrofit2.Retrofit;
 import retrofit2.converter.gson.GsonConverterFactory;
 
@@ -22,5 +21,8 @@ public class NetworkService {
         }
         return mInstance;
     }
-}
 
+    public ApiService getJSONApi() {
+        return mRetrofit.create(ApiService.class);
+    }
+}

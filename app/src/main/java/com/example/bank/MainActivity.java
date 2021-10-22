@@ -1,8 +1,10 @@
 package com.example.bank;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
-import android.os.AsyncTask;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.ContextThemeWrapper;
 import android.view.LayoutInflater;
@@ -11,15 +13,10 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
-
-import com.auth0.client.auth.AuthAPI;
-import com.auth0.exception.APIException;
-import com.auth0.exception.Auth0Exception;
-import com.auth0.json.auth.TokenHolder;
-import com.auth0.net.AuthRequest;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -31,27 +28,33 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
+
+import okhttp3.internal.cache.DiskLruCache;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity {
     TextView date, eur, usd, usdTitle, eurTitle;
-    String token;
 
-    AuthAPI auth = new AuthAPI("https://dev-6bzrae6x.us.auth0.com", "BscfhjE7x4gLRC5f25WPmnEqVrbZlCq8", "5J2i82xvVulAWS1o90ksimlyx9xz7oy6TLcOQ-mJiE62ofBobiLJNr4GQfTmGwcF");
-
+    SharedPreferences pref;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         super.onCreate(savedInstanceState);
+        pref = getApplicationContext().getSharedPreferences("pref", 0);
+        if (!pref.getBoolean("tutorial", false)) {
+            Intent intent = new Intent(MainActivity.this, introActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
+
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
         setContentView(R.layout.activity_main);
-
-
-        String urll = auth.authorizeUrl("https://dev-6bzrae6x.us.auth0.com/authorize")
-                .withAudience("https://dev-6bzrae6x.us.auth0.com/users")
-                .withScope("openid contacts")
-                .withState("state123")
-                .build();
 
 
         date = findViewById(R.id.date);
@@ -61,6 +64,12 @@ public class MainActivity extends AppCompatActivity {
         eurTitle = findViewById(R.id.eurTitle);
         usdTitle = findViewById(R.id.usdTitle);
 
+       editor = pref.edit();
+
+       TextView ads = findViewById(R.id.abc);
+       if (!pref.getString("token", "").isEmpty()) {
+           ads.append(pref.getString("token", "empty"));
+       }
 
         //Get a date
         final Calendar c = Calendar.getInstance();
@@ -123,17 +132,78 @@ public class MainActivity extends AppCompatActivity {
         View mView = inflater.inflate(R.layout.login, null);
         builder.setView(mView);
 
-        final EditText usernameField = mView.findViewById(R.id.loginField);
-        final EditText passwordField = mView.findViewById(R.id.passwordField);
+//        final EditText usernameField = mView.findViewById(R.id.loginField);
+//        final EditText passwordField = mView.findViewById(R.id.passwordField);
 
         //Setting message manually and performing action on button click
         builder.setCancelable(false)
-                .setNegativeButton("Отмена", (dialog, id) -> dialog.cancel())
-                .setPositiveButton("Добавить", (dialog, id) -> {
-                    String password = "12345678";
-                    String[] dataa = {"maksrio2003g@gmail.com", password};
+                .setNegativeButton("Отмена", (dialog, id) -> {
+                            TextView a = findViewById(R.id.abc);
+                            NetworkService.getInstance()
+                                    .getJSONApi()
+                                    .getRoles()
+                                    .enqueue(new Callback<List<Role>>() {
+                                        @Override
+                                        public void onResponse(Call<List<Role>> call, Response<List<Role>> response) {
+                                            List<Role> list = response.body();
+                                            if (list != null) {
+//                                                for (int i = 0; i < list.size(); i++) {
+//                                                    Role current = list.get(i);
+//                                                    a.append("id: " + current.getId() + "; Name: " + current.getName() + "; Desc: " + current.getDescription() + " ||||||");
+//                                                }
+                                                editor.putString("token", list.get(0).getId());
+                                                editor.apply();
+                                            } else {
+                                                a.append(response.raw().toString());
+                                            }
+                                        }
 
-                    new RetrieveFeedTask().execute(dataa);
+                                        @Override
+                                        public void onFailure(Call<List<Role>> call, Throwable t) {
+                                            a.append(t.getMessage());
+                                        }
+                                    });
+                            dialog.cancel();
+
+                        }
+                )
+                .setPositiveButton("Добавить", (dialog, id) -> {
+                    Dialog f = (Dialog) dialog;
+                    EditText loginField = f.findViewById(R.id.loginField);
+                    EditText passwordField = f.findViewById(R.id.passwordField);
+
+                    String login = loginField.getText().toString();
+                    String password = passwordField.getText().toString();
+                    RolePost data = new RolePost();
+//                    data.setId("");
+                    data.setName(login);
+                    data.setDescription(password);
+
+                    NetworkService.getInstance()
+                            .getJSONApi()
+                            .postRole(data)
+                            .enqueue(new Callback<Role>() {
+                                @Override
+                                public void onResponse(@NonNull Call<Role> call, @NonNull Response<Role> response) {
+                                    Role role = response.body();
+                                    TextView a = findViewById(R.id.abc);
+                                    if (role != null) {
+                                        a.append(role.getId());
+                                        a.append(role.getName());
+                                        a.append(role.getDescription());
+                                    } else {
+                                        a.append("error");
+                                    }
+                                }
+
+                                @Override
+                                public void onFailure(@NonNull Call<Role> call, @NonNull Throwable t) {
+                                    TextView a = findViewById(R.id.abc);
+                                    a.append(t.getMessage());
+                                    t.printStackTrace();
+                                }
+                            })
+                    ;
 
                 })
                 .setTitle("Авторизация")
@@ -141,13 +211,6 @@ public class MainActivity extends AppCompatActivity {
 
     }
 
-    public void checkToken(String token) {
-        if (!token.isEmpty()) {
-            Intent intent = new Intent(getApplicationContext(), ATM.class);
-            startActivity(intent);
-            finish();
-        }
-    }
 
     public void ATM(View v) {
         Intent activityATM = new Intent(getApplicationContext(), ATM.class);
@@ -159,53 +222,6 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = new Intent(getApplicationContext(), Course.class);
         startActivity(intent);
         finish();
-    }
-
-    class RetrieveFeedTask extends AsyncTask<String, Void, String> {
-        private Exception exception;
-
-        protected void onPostExecute(String result) {
-            super.onPostExecute(result);
-            runOnUiThread(() -> {
-                token = result;
-                TextView a = findViewById(R.id.abc);
-                a.setText(result);
-//                checkToken(result);
-            });
-        }
-
-        protected String doInBackground(String... data) {
-//            AuthRequest request = auth.login("maksrio2003g@gmail.com", "12345678")
-//                    .setAudience("https://dev-6bzrae6x.us.auth0.com/users")
-//                    .setScope("openid contacts");
-            try {
-                TokenHolder result = auth.login(data[0], data[1].toCharArray())
-                        .setScope("openid email")
-                        .execute();
-
-//                runOnUiThread(() -> {
-//                TextView a = findViewById(R.id.abc);
-//                a.setText(result.getAccessToken());
-//                });
-                return result.getAccessToken();
-            } catch (APIException exception) {
-                // api error
-                runOnUiThread(() -> {
-
-                    TextView a = findViewById(R.id.abc);
-                    a.setText(exception.getMessage());
-                });
-            } catch (Auth0Exception exception) {
-                // request error
-                runOnUiThread(() -> {
-
-                    TextView a = findViewById(R.id.abc);
-                    a.setText(exception.getMessage());
-                });
-            }
-            ;
-            return null;
-        }
     }
 
     private String download(String urlPath) throws IOException {
